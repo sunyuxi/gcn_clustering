@@ -71,10 +71,11 @@ class Feeder(data.Dataset):
         _, fdim = feat.shape
         feat = torch.cat([feat, torch.zeros(max_num_nodes - num_nodes, fdim)], dim=0)
       
+        unique_nodes_set = set(unique_nodes_list)
         for node in unique_nodes_list:
             neighbors = self.knn_graph[node, 1:self.active_connection+1]
             for n in neighbors:
-                if n in unique_nodes_list: 
+                if n in unique_nodes_set: 
                     A[unique_nodes_map[node], unique_nodes_map[n]] = 1
                     A[unique_nodes_map[n], unique_nodes_map[node]] = 1
 
